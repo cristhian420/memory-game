@@ -57,17 +57,13 @@ document.addEventListener('DOMContentLoaded', function() {
     },
   ]
   .sort(() => 0.5 - Math.random());
-  console.log(cards);
-
 
   const grid = document.querySelector('.grid');
   let cardChosen = [];
   let cardChosenId = [];
-  const cardFound = [];
+  let cardFound = [];
   const result = document.getElementById('result');
   const container = document.querySelector('.container')
-
-
 
 
   // create Board
@@ -83,13 +79,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // check for matches
   function checkForMatch (){
-    var allCards = document.querySelectorAll('img');
+    let allCards = document.querySelectorAll('img');
     const optionOneId = cardChosenId[0];
     const optionTwoId = cardChosenId[1];
     if (cardChosen[0] === cardChosen[1]) {
       // alert('You find a match');
       allCards[optionOneId].setAttribute('src', 'asset/img/white.png');
       allCards[optionTwoId].setAttribute('src', 'asset/img/white.png');
+      allCards[optionOneId].removeEventListener('click', flipCard)
+      allCards[optionTwoId].removeEventListener('click', flipCard)
       cardFound.push(cardChosen);
     } else {
       allCards[optionOneId].setAttribute('src', 'asset/img/blank.png');
@@ -103,9 +101,10 @@ document.addEventListener('DOMContentLoaded', function() {
       result.textContent = 'Congrantulations, you found all the matches 🎊';
       const resetBtn = document.createElement('button');
       resetBtn.setAttribute('id', 'resetBtn');
+      resetBtn.textContent = 'Start again'
       container.appendChild(resetBtn);
       document.addEventListener('click', (event) => {
-        if(event.target.id === 'resetBtn') startAgain;
+        if(event.target.id === 'resetBtn') startAgain();
       })
      }
   }
@@ -116,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function flipCard () {
     var cardId = this.getAttribute('data-id');
-    console.log(cardId);
     cardChosen.push(cards[cardId].name);
     cardChosenId.push(cardId);
     this.setAttribute('src', cards[cardId].img);
@@ -128,10 +126,14 @@ document.addEventListener('DOMContentLoaded', function() {
   // start again 
   function startAgain () {
     result.textContent = '';
-    var cardsToStart = document.querySelectorAll('img');
+
     for (let i = 0; i < cards.length; i++) {
+      var cardsToStart = document.querySelectorAll('img');
       cardsToStart[i].setAttribute('src', 'asset/img/blank.png');
+      cardsToStart[i].addEventListener('click', flipCard);
     }
+    cardFound = [];
+    container.removeChild(resetBtn);
   }
 
   createBoard();
