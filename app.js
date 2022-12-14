@@ -63,7 +63,10 @@ document.addEventListener('DOMContentLoaded', function() {
   let cardChosenId = [];
   let cardFound = [];
   const result = document.getElementById('result');
-  const container = document.querySelector('.container')
+  const container = document.querySelector('.container');
+  const resetBtn = document.createElement('button');
+  resetBtn.setAttribute('id', 'resetBtn');
+  resetBtn.textContent = 'Start again'
 
 
   // create Board
@@ -99,9 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
     result.textContent = cardFound.length;
     if(cardFound.length === cards.length/2) {
       result.textContent = 'Congrantulations, you found all the matches 🎊';
-      const resetBtn = document.createElement('button');
-      resetBtn.setAttribute('id', 'resetBtn');
-      resetBtn.textContent = 'Start again'
+
       container.appendChild(resetBtn);
       document.addEventListener('click', (event) => {
         if(event.target.id === 'resetBtn') startAgain();
@@ -109,8 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
      }
   }
   
-  // add event listener
-
   // flip the card
 
   function flipCard () {
@@ -134,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     cardFound = [];
     container.removeChild(resetBtn);
+    cards.sort(() => 0.5 - Math.random());
   }
 
   createBoard();
